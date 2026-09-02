@@ -278,7 +278,7 @@
     </div>
     <p class="poke-hint">psst, the blob is clickable 👆</p>
   </div>
-  <div class="avatar-blob" id="blob" role="button" aria-label="Poke the blob">
+  <div class="avatar-blob" id="blobPoke" role="button" aria-label="Poke the blob">
     <span class="speech-bubble" id="blobSpeech">meow!</span>
     <svg viewBox="0 0 200 200">
       <defs>
@@ -448,7 +448,7 @@
 })();
 
 (function(){
-  var blob = document.getElementById('blob');
+  var blob = document.getElementById('blobPoke');
   var speech = document.getElementById('blobSpeech');
   var phrases = ['meow!', 'purr~', 'hi!! 🐈', 'boop', ':3', 'nya~'];
   var speechTimer;
