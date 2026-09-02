@@ -3,78 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rusty Chaffin</title>
-<meta name="description" content="Rusty Chaffin — self-hosting, Linux desktop tooling, and homelab projects.">
+<title>Rusty</title>
+<meta name="description" content="Rusty. Self-hosted tools for Linux desktops, Android, and a small homelab.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light dark;
     --md-primary: #6750A4;
     --md-on-primary: #FFFFFF;
-    --md-primary-container: #EADDFF;
-    --md-on-primary-container: #21005D;
-    --md-secondary: #625B71;
-    --md-secondary-container: #E8DEF8;
-    --md-on-secondary-container: #1D192B;
-    --md-tertiary: #7D5260;
-    --md-tertiary-container: #FFD8E4;
-    --md-on-tertiary-container: #31111D;
     --md-surface: #FFFBFE;
-    --md-surface-dim: #DED8E1;
     --md-surface-container-low: #F7F2FA;
     --md-surface-container: #F3EDF7;
-    --md-surface-container-high: #ECE6F0;
     --md-on-surface: #1C1B1F;
     --md-on-surface-variant: #49454F;
-    --md-outline: #79747E;
     --md-outline-variant: #CAC4D0;
-    --md-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 1px 3px 1px rgba(0,0,0,0.15);
-    --md-shadow-lg: 0 1px 2px rgba(0,0,0,0.30), 0 4px 12px 2px rgba(0,0,0,0.18);
   }
   :root:not([data-theme="light"]){
     @media (prefers-color-scheme: dark){
       --md-primary: #D0BCFF;
       --md-on-primary: #381E72;
-      --md-primary-container: #4F378B;
-      --md-on-primary-container: #EADDFF;
-      --md-secondary: #CCC2DC;
-      --md-secondary-container: #4A4458;
-      --md-on-secondary-container: #E8DEF8;
-      --md-tertiary: #EFB8C8;
-      --md-tertiary-container: #633B48;
-      --md-on-tertiary-container: #FFD8E4;
       --md-surface: #141218;
-      --md-surface-dim: #141218;
       --md-surface-container-low: #1D1B20;
       --md-surface-container: #211F26;
-      --md-surface-container-high: #2B2930;
       --md-on-surface: #E6E0E9;
       --md-on-surface-variant: #CAC4D0;
-      --md-outline: #938F99;
       --md-outline-variant: #49454F;
     }
   }
   :root[data-theme="dark"]{
     --md-primary: #D0BCFF;
     --md-on-primary: #381E72;
-    --md-primary-container: #4F378B;
-    --md-on-primary-container: #EADDFF;
-    --md-secondary: #CCC2DC;
-    --md-secondary-container: #4A4458;
-    --md-on-secondary-container: #E8DEF8;
-    --md-tertiary: #EFB8C8;
-    --md-tertiary-container: #633B48;
-    --md-on-tertiary-container: #FFD8E4;
     --md-surface: #141218;
-    --md-surface-dim: #141218;
     --md-surface-container-low: #1D1B20;
     --md-surface-container: #211F26;
-    --md-surface-container-high: #2B2930;
     --md-on-surface: #E6E0E9;
     --md-on-surface-variant: #CAC4D0;
-    --md-outline: #938F99;
     --md-outline-variant: #49454F;
   }
 
@@ -86,293 +51,170 @@
     font-family:'Roboto', system-ui, sans-serif;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3,.headline{font-family:'Google Sans Text','Roboto',system-ui,sans-serif;}
   a{color:inherit;}
   .mono{font-family:'Roboto Mono', monospace;}
 
-  /* ---- top app bar ---- */
   .appbar{
     position:sticky; top:0; z-index:20;
     display:flex; align-items:center; justify-content:space-between;
-    padding: 14px clamp(16px,4vw,48px);
-    background: color-mix(in srgb, var(--md-surface) 88%, transparent);
-    backdrop-filter: blur(12px);
+    padding: 16px clamp(20px,4vw,48px);
+    background: var(--md-surface);
     border-bottom: 1px solid var(--md-outline-variant);
   }
-  .appbar .brand{ font-weight:500; font-size:1.05rem; letter-spacing:.02em; display:flex; align-items:center; gap:10px;}
-  .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--md-primary);}
-  .appbar nav{display:flex; gap:4px;}
+  .appbar .brand{ font-weight:500; font-size:1rem; }
+  .appbar nav{display:flex; gap:24px;}
   .appbar nav a{
-    padding:8px 16px; border-radius:100px; text-decoration:none;
-    font-size:.9rem; color:var(--md-on-surface-variant);
-    transition: background .15s ease, color .15s ease;
+    text-decoration:none; font-size:.9rem; color:var(--md-on-surface-variant);
   }
-  .appbar nav a:hover{ background:var(--md-surface-container-high); color:var(--md-on-surface);}
+  .appbar nav a:hover{ color:var(--md-on-surface);}
   .theme-toggle{
-    border:1px solid var(--md-outline-variant); background:var(--md-surface-container-low);
-    color:var(--md-on-surface); border-radius:100px; padding:8px 14px; font-size:.85rem;
-    cursor:pointer; display:flex; align-items:center; gap:6px;
+    border:1px solid var(--md-outline-variant); background:transparent;
+    color:var(--md-on-surface-variant); border-radius:6px; padding:6px 10px; font-size:.8rem;
+    cursor:pointer;
   }
+  .theme-toggle:hover{ color:var(--md-on-surface); border-color:var(--md-on-surface-variant); }
 
-  /* ---- hero ---- */
-  .hero{
-    max-width:1080px; margin:0 auto; padding: clamp(48px,8vw,96px) clamp(16px,4vw,48px) 40px;
-    display:grid; grid-template-columns: 1fr auto; gap:40px; align-items:center;
-  }
-  .hero .eyebrow{
-    display:inline-block; padding:6px 14px; border-radius:100px;
-    background:var(--md-secondary-container); color:var(--md-on-secondary-container);
-    font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; font-weight:500; margin-bottom:20px;
-  }
-  .hero h1{ font-size:clamp(2.4rem,5.5vw,3.6rem); line-height:1.05; margin:0 0 18px; font-weight:400; letter-spacing:-.01em;}
-  .hero h1 b{font-weight:700; color:var(--md-primary);}
-  .hero p{ font-size:1.08rem; line-height:1.6; color:var(--md-on-surface-variant); max-width:56ch; margin:0 0 28px;}
-  .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
-  .btn{
-    display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:100px;
-    font-weight:500; font-size:.95rem; text-decoration:none; cursor:pointer; border:none;
-    transition: box-shadow .15s ease, transform .1s ease;
-  }
-  .btn:active{transform:scale(.98);}
-  .btn-filled{ background:var(--md-primary); color:var(--md-on-primary); box-shadow:var(--md-shadow);}
-  .btn-filled:hover{ box-shadow:var(--md-shadow-lg);}
-  .btn-tonal{ background:var(--md-secondary-container); color:var(--md-on-secondary-container);}
-  .btn-tonal:hover{ filter:brightness(1.05);}
+  main{max-width:720px; margin:0 auto; padding:0 clamp(20px,4vw,48px);}
 
-  .avatar-blob{
-    width:min(240px,40vw); aspect-ratio:1; position:relative; justify-self:end;
+  .hero{ padding: clamp(56px,10vw,96px) 0 48px; border-bottom:1px solid var(--md-outline-variant); }
+  .hero h1{ font-size:clamp(1.9rem,4.5vw,2.5rem); line-height:1.3; font-weight:400; margin:0 0 20px; max-width:22ch;}
+  .hero h1 .accent{color:var(--md-primary); font-weight:500;}
+  .hero p{ font-size:1.02rem; line-height:1.7; color:var(--md-on-surface-variant); max-width:56ch; margin:0;}
+
+  section{ padding: 44px 0; border-bottom:1px solid var(--md-outline-variant); }
+  section:last-of-type{ border-bottom:none; }
+  h2{ font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; font-weight:500; color:var(--md-on-surface-variant); margin:0 0 24px; }
+
+  .about p{ font-size:1rem; line-height:1.75; margin:0 0 14px; color:var(--md-on-surface);}
+  .about p:last-child{margin-bottom:0;}
+
+  .proj-list{ display:flex; flex-direction:column; }
+  .proj{
+    display:block; text-decoration:none; color:inherit;
+    padding:20px 0; border-top:1px solid var(--md-outline-variant);
   }
-  .avatar-blob svg{width:100%;height:100%;display:block;}
+  .proj:first-child{ border-top:none; }
+  .proj-row{ display:flex; justify-content:space-between; align-items:baseline; gap:16px;}
+  .proj h3{ margin:0; font-size:1.08rem; font-weight:500;}
+  .proj .arrow{ color:var(--md-on-surface-variant); font-size:.95rem; flex-shrink:0; transition:transform .12s ease;}
+  .proj:hover h3{ color:var(--md-primary); }
+  .proj:hover .arrow{ transform:translateX(3px); color:var(--md-primary);}
+  .proj p{ margin:6px 0 0; color:var(--md-on-surface-variant); font-size:.92rem; line-height:1.6; max-width:60ch;}
+  .proj .stack{ margin-top:8px; font-size:.78rem; color:var(--md-on-surface-variant); }
 
-  /* ---- section shell ---- */
-  section{max-width:1080px; margin:0 auto; padding: 28px clamp(16px,4vw,48px);}
-  .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:22px; gap:16px; flex-wrap:wrap;}
-  .section-head h2{ font-size:1.6rem; font-weight:500; margin:0;}
-  .section-head p{ margin:4px 0 0; color:var(--md-on-surface-variant); font-size:.95rem;}
-
-  /* ---- stats strip ---- */
-  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:2px; background:var(--md-outline-variant); border-radius:24px; overflow:hidden; margin:8px 0 8px;}
-  .stat{ background:var(--md-surface-container-low); padding:22px 18px; text-align:left;}
-  .stat .num{ font-size:1.9rem; font-weight:700; color:var(--md-primary); font-family:'Google Sans Text';}
-  .stat .lbl{ font-size:.82rem; color:var(--md-on-surface-variant); margin-top:2px;}
-
-  /* ---- project cards ---- */
-  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px;}
-  .card{
-    background:var(--md-surface-container-low);
-    border:1px solid var(--md-outline-variant);
-    border-radius:28px; padding:24px; text-decoration:none; color:inherit;
-    display:flex; flex-direction:column; gap:12px; min-height:230px;
-    transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
-    position:relative; overflow:hidden;
-  }
-  .card:hover{ box-shadow:var(--md-shadow-lg); transform:translateY(-3px); border-color:transparent;}
-  .card .swatch{
-    width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center;
-    font-size:1.3rem; color:var(--md-on-primary); background:var(--md-primary);
-  }
-  .card h3{ margin:0; font-size:1.18rem; font-weight:500;}
-  .card p{ margin:0; color:var(--md-on-surface-variant); font-size:.92rem; line-height:1.55; flex:1;}
-  .card .tags{ display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;}
-  .chip{ font-size:.72rem; padding:4px 10px; border-radius:100px; background:var(--md-surface-container-high); color:var(--md-on-surface-variant); font-family:'Roboto Mono',monospace;}
-  .card .go{ font-size:.85rem; font-weight:500; color:var(--md-primary); display:flex; align-items:center; gap:4px;}
-  .card .go svg{width:16px;height:16px;transition:transform .15s ease;}
-  .card:hover .go svg{transform:translateX(3px);}
-
-  /* per-card accent variety, still one system */
-  .card.c1 .swatch{background:#6750A4;}
-  .card.c2 .swatch{background:#386A20;}
-  .card.c3 .swatch{background:#984061;}
-  .card.c4 .swatch{background:#2F5DA8;}
-  .card.c5 .swatch{background:#8B5000;}
-
-  /* ---- about card ---- */
-  .about-card{
-    background:var(--md-primary-container); color:var(--md-on-primary-container);
-    border-radius:28px; padding:clamp(24px,4vw,40px); display:grid; gap:14px;
-  }
-  .about-card h2{margin:0; font-size:1.5rem; font-weight:500;}
-  .about-card p{margin:0; line-height:1.7; font-size:1rem;}
-  .about-card .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;}
-  .pill{ background:rgba(255,255,255,.35); padding:6px 14px; border-radius:100px; font-size:.82rem; font-weight:500;}
-  :root[data-theme="dark"] .pill,
-  :root:not([data-theme="light"]) .pill{ background: rgba(0,0,0,.2);}
+  .contact-row{ display:flex; gap:28px; flex-wrap:wrap; }
+  .contact-item .label{ display:block; font-size:.78rem; color:var(--md-on-surface-variant); margin-bottom:4px;}
+  .contact-item a{ font-size:1rem; text-decoration:none; color:var(--md-primary); }
+  .contact-item a:hover{ text-decoration:underline; }
+  .contact-item span.value{ font-size:1rem; }
 
   footer{
-    max-width:1080px; margin:40px auto 0; padding:28px clamp(16px,4vw,48px) 48px;
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
-    color:var(--md-on-surface-variant); font-size:.85rem; border-top:1px solid var(--md-outline-variant);
-  }
-  footer a{color:var(--md-primary); text-decoration:none; font-weight:500;}
-
-  @media (max-width:720px){
-    .hero{grid-template-columns:1fr; text-align:left;}
-    .avatar-blob{justify-self:start;}
-    .appbar nav{display:none;}
+    max-width:720px; margin:0 auto; padding:24px clamp(20px,4vw,48px) 48px;
+    color:var(--md-on-surface-variant); font-size:.8rem;
   }
 </style>
 </head>
 <body>
 
 <div class="appbar">
-  <div class="brand"><span class="dot"></span> Rusty</div>
+  <div class="brand">Rusty</div>
   <nav>
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
   </nav>
   <button class="theme-toggle" id="themeToggle" type="button">
-    <span id="themeIcon">◐</span> <span id="themeLabel">Auto</span>
+    <span id="themeLabel">Auto</span>
   </button>
 </div>
 
-<div class="hero">
-  <div>
-    <span class="eyebrow">Self-hosting &amp; Linux tooling</span>
-    <h1>I build small, sharp tools that run on <b>my own hardware</b>.</h1>
-    <p>Hi, I'm Rusty — I design and ship desktop tools, Android apps, and homelab
-      infrastructure for a fully self-hosted life: no clouds, no subscriptions,
-      no accounts I don't control. Below is what I've actually shipped.</p>
-    <div class="cta-row">
-      <a class="btn btn-filled" href="#projects">See the projects ↓</a>
-      <a class="btn btn-tonal" href="https://github.com/rustyisacat" target="_blank" rel="noopener">GitHub ↗</a>
+<main>
+
+  <div class="hero">
+    <h1>I build small tools that run on <span class="accent">my own hardware</span>.</h1>
+    <p>I write desktop software, Android apps, and homelab infrastructure, mostly for myself,
+      mostly self-hosted. Everything below is public and something I actually use day to day.</p>
+  </div>
+
+  <section id="about" class="about">
+    <h2>About</h2>
+    <p>I run a heavily customized Hyprland desktop on Arch, keep a couple of always-on servers
+      for backups and small services, and repurpose old hardware rather than replace it.
+      Most projects here started because I wanted a specific tool that didn't exist yet, so
+      I built it, tested it against my own real setup, and kept using it.</p>
+    <p>Linux desktop tooling, Android, Python, and self-hosted infrastructure are what I spend
+      most of my time on.</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="proj-list">
+
+      <a class="proj" href="https://rustyisacat.github.io/caelback/" target="_blank" rel="noopener">
+        <div class="proj-row"><h3>caelback</h3><span class="arrow">&rarr;</span></div>
+        <p>A stdlib-only Python CLI that snapshots and restores my Hyprland/Caelestia setup,
+          so I can try other dotfiles and always get back to what I had.</p>
+        <div class="stack mono">python, cli, dotfiles</div>
+      </a>
+
+      <a class="proj" href="https://rustyisacat.github.io/hyprform/" target="_blank" rel="noopener">
+        <div class="proj-row"><h3>Hyprform</h3><span class="arrow">&rarr;</span></div>
+        <p>A native GTK4/libadwaita GUI for editing Hyprland configs, both the classic
+          .conf syntax and the newer Lua config API, with real form fields.</p>
+        <div class="stack mono">gtk4, python, desktop app</div>
+      </a>
+
+      <a class="proj" href="https://rustyisacat.github.io/livewall/" target="_blank" rel="noopener">
+        <div class="proj-row"><h3>LiveWall</h3><span class="arrow">&rarr;</span></div>
+        <p>A wallpaper library manager for Hyprland with tags, favorites, search, and
+          duplicate detection, plus a quick picker on a global keybind.</p>
+        <div class="stack mono">python, textual, wallpapers</div>
+      </a>
+
+      <a class="proj" href="https://rustyisacat.github.io/echo-dashboard/" target="_blank" rel="noopener">
+        <div class="proj-row"><h3>Aurora + echo-dashboard</h3><span class="arrow">&rarr;</span></div>
+        <p>A repurposed Amazon Echo Show turned into a self-hosted bedside display. An
+          Android backend on my phone feeds weather, alarms, and notifications to a
+          kiosk frontend over the LAN, with no cloud involved.</p>
+        <div class="stack mono">kotlin, android, javascript</div>
+      </a>
+
+      <a class="proj" href="https://rustyisacat.github.io/echo-dashboard-solo/" target="_blank" rel="noopener">
+        <div class="proj-row"><h3>echo-dashboard-solo</h3><span class="arrow">&rarr;</span></div>
+        <p>A phone-free fork of the bedside display above, fully standalone with its own
+          journal, habits, reminders, and offline star map. This is the version actually
+          running on my nightstand.</p>
+        <div class="stack mono">javascript, offline-first, kiosk</div>
+      </a>
+
+      <a class="proj" href="https://github.com/rustyisacat" target="_blank" rel="noopener">
+        <div class="proj-row"><h3>More on GitHub</h3><span class="arrow">&rarr;</span></div>
+        <p>Smaller self-hosted tools: status dashboards, backup automation, a LAN scanner,
+          and a Discord bot, all built for real use on real hardware.</p>
+        <div class="stack mono">homelab, ops</div>
+      </a>
+
     </div>
-  </div>
-  <div class="avatar-blob" aria-hidden="true">
-    <svg viewBox="0 0 200 200">
-      <defs>
-        <linearGradient id="blob" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="var(--md-primary)"/>
-          <stop offset="100%" stop-color="var(--md-tertiary)"/>
-        </linearGradient>
-      </defs>
-      <path fill="url(#blob)">
-        <animate attributeName="d" dur="10s" repeatCount="indefinite"
-          values="M50,-60C63,-51,70,-33,73,-14C76,5,75,26,64,42C53,58,32,69,10,71C-12,73,-35,66,-51,52C-67,38,-76,17,-75,-4C-74,-25,-63,-46,-46,-58C-29,-70,-6,-73,14,-70C34,-67,37,-69,50,-60Z;
-                  M46,-56C59,-48,67,-30,70,-11C73,8,71,28,60,44C49,60,29,72,7,74C-15,76,-38,68,-53,53C-68,38,-76,16,-73,-4C-70,-24,-57,-42,-41,-53C-25,-64,-6,-68,12,-70C30,-72,33,-64,46,-56Z;
-                  M50,-60C63,-51,70,-33,73,-14C76,5,75,26,64,42C53,58,32,69,10,71C-12,73,-35,66,-51,52C-67,38,-76,17,-75,-4C-74,-25,-63,-46,-46,-58C-29,-70,-6,-73,14,-70C34,-67,37,-69,50,-60Z"/>
-      </path>
-    </svg>
-  </div>
-</div>
+  </section>
 
-<section>
-  <div class="stats">
-    <div class="stat"><div class="num">6</div><div class="lbl">shipped projects</div></div>
-    <div class="stat"><div class="num">100%</div><div class="lbl">self-hosted</div></div>
-    <div class="stat"><div class="num">AGPL</div><div class="lbl">open source by default</div></div>
-    <div class="stat"><div class="num">0</div><div class="lbl">cloud accounts required</div></div>
-  </div>
-</section>
-
-<section id="about">
-  <div class="about-card">
-    <h2>What I actually do</h2>
-    <p>I'm a hobbyist systems tinkerer — I run my own Hyprland desktop tuned to the
-      last pixel, keep a small homelab of always-on servers, and write the tools
-      I wish existed instead of settling for the closest commercial product.
-      Most of what's below started as "I wish I had a thing that&nbsp;…" and ended
-      as a real, tested, working release. I care a lot about things actually
-      working end-to-end — verified on real hardware, not just assumed correct —
-      and about keeping my own data on my own machines.</p>
-    <div class="pillrow">
-      <span class="pill">Hyprland &amp; Linux desktop</span>
-      <span class="pill">Android / Kotlin</span>
-      <span class="pill">Python tooling</span>
-      <span class="pill">Self-hosted infra</span>
-      <span class="pill">GTK4 / libadwaita</span>
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-row">
+      <div class="contact-item">
+        <span class="label">GitHub</span>
+        <a href="https://github.com/rustyisacat" target="_blank" rel="noopener">@rustyisacat</a>
+      </div>
+      <div class="contact-item">
+        <span class="label">Discord</span>
+        <span class="value">rusty_the_cat</span>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="projects">
-  <div class="section-head">
-    <div>
-      <h2>Projects</h2>
-      <p>Every one of these is public, AGPL-licensed, and running on my own machines.</p>
-    </div>
-  </div>
-  <div class="grid">
-
-    <a class="card c1" href="https://rustyisacat.github.io/caelback/" target="_blank" rel="noopener">
-      <div class="swatch">⌘</div>
-      <h3>caelback</h3>
-      <p>A stdlib-only Python CLI that snapshots and restores my entire Hyprland/Caelestia
-        setup, so I can dotfile-hop to any other rice and always get back to exactly
-        what I had — configs, packages, systemd units, all of it.</p>
-      <div class="tags"><span class="chip">python</span><span class="chip">cli</span><span class="chip">dotfiles</span></div>
-      <span class="go">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-
-    <a class="card c2" href="https://rustyisacat.github.io/hyprform/" target="_blank" rel="noopener">
-      <div class="swatch">▤</div>
-      <h3>Hyprform</h3>
-      <p>A native GTK4/libadwaita GUI for editing Hyprland configs — both classic
-        <code class="mono">.conf</code> syntax and Hyprland's newer Lua config API —
-        with real form fields instead of hand-edited text files.</p>
-      <div class="tags"><span class="chip">gtk4</span><span class="chip">python</span><span class="chip">desktop app</span></div>
-      <span class="go">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-
-    <a class="card c3" href="https://rustyisacat.github.io/livewall/" target="_blank" rel="noopener">
-      <div class="swatch">▧</div>
-      <h3>LiveWall</h3>
-      <p>A wallpaper library manager for Hyprland with tags, favorites, search, and
-        duplicate detection, layered on top of animated-wallpaper rendering — plus a
-        fast tag-aware quick picker on a global keybind.</p>
-      <div class="tags"><span class="chip">python</span><span class="chip">textual</span><span class="chip">wallpapers</span></div>
-      <span class="go">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-
-    <a class="card c4" href="https://rustyisacat.github.io/echo-dashboard/" target="_blank" rel="noopener">
-      <div class="swatch">⌗</div>
-      <h3>Aurora + echo-dashboard</h3>
-      <p>A repurposed Amazon Echo Show turned into a self-hosted bedside display —
-        an Android backend on my phone feeds live weather, alarms, and notifications
-        to a kiosk frontend over the LAN. No cloud, no subscription.</p>
-      <div class="tags"><span class="chip">kotlin</span><span class="chip">android</span><span class="chip">javascript</span></div>
-      <span class="go">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-
-    <a class="card c5" href="https://rustyisacat.github.io/echo-dashboard-solo/" target="_blank" rel="noopener">
-      <div class="swatch">☾</div>
-      <h3>echo-dashboard-solo</h3>
-      <p>A phone-free fork of the bedside display above — fully standalone, with its
-        own journal, habits, reminders, sleep insights, and an offline star map.
-        This is the version actually running on my nightstand.</p>
-      <div class="tags"><span class="chip">javascript</span><span class="chip">offline-first</span><span class="chip">kiosk</span></div>
-      <span class="go">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-
-    <a class="card c1" href="https://github.com/rustyisacat" target="_blank" rel="noopener">
-      <div class="swatch">＋</div>
-      <h3>...and more on GitHub</h3>
-      <p>A growing homelab of smaller self-hosted tools — status dashboards, backup
-        automation, a LAN scanner, and the odd Discord bot — all built the same way:
-        for real use, on real hardware, verified end-to-end.</p>
-      <div class="tags"><span class="chip">homelab</span><span class="chip">ops</span></div>
-      <span class="go">See full profile <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-    </a>
-
-  </div>
-</section>
-
-<section id="contact">
-  <div class="section-head">
-    <div>
-      <h2>Get in touch</h2>
-      <p>Best reached on GitHub or Discord.</p>
-    </div>
-  </div>
-  <div class="cta-row">
-    <a class="btn btn-filled" href="https://github.com/rustyisacat" target="_blank" rel="noopener">GitHub — @rustyisacat</a>
-    <span class="btn btn-tonal">Discord — rusty_the_cat</span>
-  </div>
-</section>
+</main>
 
 <footer>
-  <span>Designed in Material You. Built with plain HTML, CSS, and JS — no frameworks.</span>
-  <a href="https://github.com/rustyisacat" target="_blank" rel="noopener">github.com/rustyisacat ↗</a>
+  Plain HTML, CSS, and JS. No framework, no build step.
 </footer>
 
 <script>
@@ -380,16 +222,13 @@
   var root = document.documentElement;
   var key = 'theme-preference';
   var btn = document.getElementById('themeToggle');
-  var icon = document.getElementById('themeIcon');
   var label = document.getElementById('themeLabel');
   var order = ['auto','light','dark'];
-  var icons = {auto:'◐', light:'☀', dark:'☾'};
   var labels = {auto:'Auto', light:'Light', dark:'Dark'};
 
   function apply(mode){
     if(mode === 'auto'){ root.removeAttribute('data-theme'); }
     else { root.setAttribute('data-theme', mode); }
-    icon.textContent = icons[mode];
     label.textContent = labels[mode];
   }
 
