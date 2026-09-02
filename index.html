@@ -135,6 +135,7 @@
   .hero h1{ font-size:clamp(2.4rem,5.5vw,3.6rem); line-height:1.05; margin:0 0 18px; font-weight:400; letter-spacing:-.01em;}
   .hero h1 b{font-weight:700; color:var(--md-primary);}
   .hero p{ font-size:1.08rem; line-height:1.6; color:var(--md-on-surface-variant); max-width:56ch; margin:0 0 28px;}
+  .poke-hint{ font-size:.82rem; color:var(--md-on-surface-variant); opacity:.7; margin:18px 0 0 !important; }
   .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
   .btn{
     display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:100px;
@@ -151,12 +152,29 @@
   .avatar-blob{
     width:min(240px,40vw); aspect-ratio:1; position:relative; justify-self:end;
     animation: bob 6s ease-in-out infinite;
+    cursor:pointer;
   }
   .avatar-blob svg{width:100%;height:100%;display:block;}
   @keyframes bob{
     0%,100%{ transform:translateY(0) rotate(0deg); }
     50%{ transform:translateY(-10px) rotate(4deg); }
   }
+  .avatar-blob.poked{ animation: bob 6s ease-in-out infinite, squish .5s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes squish{
+    0%{ transform:scale(1,1); }
+    30%{ transform:scale(1.18,0.82) rotate(-6deg); }
+    55%{ transform:scale(0.88,1.14) rotate(4deg); }
+    75%{ transform:scale(1.06,0.95) rotate(-2deg); }
+    100%{ transform:scale(1,1); }
+  }
+  .speech-bubble{
+    position:absolute; top:-14px; right:10px; transform:translateY(-100%) scale(.7);
+    background:var(--md-on-surface); color:var(--md-surface);
+    padding:8px 14px; border-radius:14px 14px 14px 4px; font-size:.85rem; font-weight:600;
+    white-space:nowrap; opacity:0; pointer-events:none;
+    transition: opacity .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .speech-bubble.show{ opacity:1; transform:translateY(-110%) scale(1); }
 
   /* ---- section shell ---- */
   section{max-width:1080px; margin:0 auto; padding: 28px clamp(16px,4vw,48px);}
@@ -248,17 +266,20 @@
 
 <div class="hero">
   <div>
-    <span class="eyebrow">Self-hosting &amp; Linux tooling</span>
+    <span class="eyebrow">🐈 chaotic good, extremely online, self-hosted</span>
     <h1>I build small, sharp tools that run on <b>my own hardware</b>.</h1>
     <p>Hi, I'm Rusty. I design and ship desktop tools, Android apps, and homelab
       infrastructure for a fully self-hosted life: no clouds, no subscriptions,
-      no accounts I don't control. Below is what I've actually shipped.</p>
+      no accounts I don't control. Mostly I just really like making my computer
+      do exactly what I want. Below is what I've actually shipped.</p>
     <div class="cta-row">
       <a class="btn btn-filled" href="#projects">See the projects ↓</a>
       <a class="btn btn-tonal" href="https://github.com/rustyisacat" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
+    <p class="poke-hint">psst, the blob is clickable 👆</p>
   </div>
-  <div class="avatar-blob" aria-hidden="true">
+  <div class="avatar-blob" id="blob" role="button" aria-label="Poke the blob">
+    <span class="speech-bubble" id="blobSpeech">meow!</span>
     <svg viewBox="0 0 200 200">
       <defs>
         <linearGradient id="blob" x1="0" y1="0" x2="1" y2="1">
@@ -282,6 +303,7 @@
     <div class="stat"><div class="num">100%</div><div class="lbl">self-hosted</div></div>
     <div class="stat"><div class="num">AGPL</div><div class="lbl">open source by default</div></div>
     <div class="stat"><div class="num">0</div><div class="lbl">cloud accounts required</div></div>
+    <div class="stat"><div class="num">∞</div><div class="lbl">side quests in progress</div></div>
   </div>
 </section>
 
@@ -380,8 +402,8 @@
 <section id="contact">
   <div class="section-head">
     <div>
-      <h2>Get in touch</h2>
-      <p>Best reached on GitHub or Discord.</p>
+      <h2>Say hi 👋</h2>
+      <p>Best reached on GitHub or Discord. Bonus points for cat memes.</p>
     </div>
   </div>
   <div class="cta-row">
@@ -391,7 +413,7 @@
 </section>
 
 <footer>
-  <span>Designed in Material You. Built with plain HTML, CSS, and JS, no frameworks. 🐈</span>
+  <span>Designed in Material You. Built with plain HTML, CSS, and JS, no frameworks, mostly out of spite for bloated web frameworks. 🐈 (try typing "meow")</span>
   <a href="https://github.com/rustyisacat" target="_blank" rel="noopener">github.com/rustyisacat ↗</a>
 </footer>
 
@@ -422,6 +444,51 @@
     saved = order[(idx + 1) % order.length];
     apply(saved);
     try { localStorage.setItem(key, saved); } catch(e) {}
+  });
+})();
+
+(function(){
+  var blob = document.getElementById('blob');
+  var speech = document.getElementById('blobSpeech');
+  var phrases = ['meow!', 'purr~', 'hi!! 🐈', 'boop', ':3', 'nya~'];
+  var speechTimer;
+
+  blob.addEventListener('click', function(){
+    blob.classList.remove('poked');
+    void blob.offsetWidth;
+    blob.classList.add('poked');
+    speech.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    speech.classList.add('show');
+    clearTimeout(speechTimer);
+    speechTimer = setTimeout(function(){ speech.classList.remove('show'); }, 1200);
+  });
+
+  var buffer = '';
+  window.addEventListener('keydown', function(e){
+    if (e.key.length !== 1) return;
+    buffer = (buffer + e.key.toLowerCase()).slice(-4);
+    if (buffer === 'meow') {
+      buffer = '';
+      var cats = ['🐈','🐾','😺','✨'];
+      for (var i = 0; i < 24; i++){
+        (function(i){
+          setTimeout(function(){
+            var el = document.createElement('span');
+            el.textContent = cats[Math.floor(Math.random() * cats.length)];
+            el.style.cssText = 'position:fixed;top:-40px;left:' + (Math.random() * 100) +
+              'vw;font-size:' + (16 + Math.random() * 18) + 'px;z-index:9999;pointer-events:none;' +
+              'transition:transform 2.4s cubic-bezier(.2,.6,.4,1),opacity 2.4s ease;opacity:1;';
+            document.body.appendChild(el);
+            requestAnimationFrame(function(){
+              el.style.transform = 'translateY(' + (window.innerHeight + 80) + 'px) rotate(' +
+                (Math.random() * 360 - 180) + 'deg)';
+              el.style.opacity = '0';
+            });
+            setTimeout(function(){ el.remove(); }, 2600);
+          }, i * 40);
+        })(i);
+      }
+    }
   });
 })();
 </script>
