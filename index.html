@@ -266,7 +266,7 @@
 
 <div class="hero">
   <div>
-    <span class="eyebrow">🐈 chaotic good, extremely online, hack the world!</span>
+    <span class="eyebrow">chaotic good, extremely online, hack the world!</span>
     <h1>I build small, sharp tools that run on <b>my own hardware</b>.</h1>
     <p>Hi, I'm Rusty. I design and ship desktop tools, Android apps, and homelab
       infrastructure for a fully self-hosted life: no clouds, no subscriptions,
@@ -279,7 +279,7 @@
     <p class="poke-hint">psst, the blob is clickable 👆</p>
   </div>
   <div class="avatar-blob" id="blobPoke" role="button" aria-label="Poke the blob">
-    <span class="speech-bubble" id="blobSpeech">meow!</span>
+    <span class="speech-bubble" id="blobSpeech">hi!</span>
     <svg viewBox="0 0 200 200">
       <defs>
         <linearGradient id="blob" x1="0" y1="0" x2="1" y2="1">
@@ -413,7 +413,7 @@
 </section>
 
 <footer>
-  <span>Designed in Material You. Built with plain HTML, CSS, and JS, no frameworks, mostly out of spite for bloated web frameworks. 🐈 (try typing "meow")</span>
+  <span>Designed in Material You. Built with plain HTML, CSS, and JS, no frameworks, mostly out of spite for bloated web frameworks.</span>
   <a href="https://github.com/rustyisacat" target="_blank" rel="noopener">github.com/rustyisacat ↗</a>
 </footer>
 
@@ -461,34 +461,6 @@
     speech.classList.add('show');
     clearTimeout(speechTimer);
     speechTimer = setTimeout(function(){ speech.classList.remove('show'); }, 1200);
-  });
-
-  var buffer = '';
-  window.addEventListener('keydown', function(e){
-    if (e.key.length !== 1) return;
-    buffer = (buffer + e.key.toLowerCase()).slice(-4);
-    if (buffer === 'meow') {
-      buffer = '';
-      var cats = ['🐈','🐾','😺','✨'];
-      for (var i = 0; i < 24; i++){
-        (function(i){
-          setTimeout(function(){
-            var el = document.createElement('span');
-            el.textContent = cats[Math.floor(Math.random() * cats.length)];
-            el.style.cssText = 'position:fixed;top:-40px;left:' + (Math.random() * 100) +
-              'vw;font-size:' + (16 + Math.random() * 18) + 'px;z-index:9999;pointer-events:none;' +
-              'transition:transform 2.4s cubic-bezier(.2,.6,.4,1),opacity 2.4s ease;opacity:1;';
-            document.body.appendChild(el);
-            requestAnimationFrame(function(){
-              el.style.transform = 'translateY(' + (window.innerHeight + 80) + 'px) rotate(' +
-                (Math.random() * 360 - 180) + 'deg)';
-              el.style.opacity = '0';
-            });
-            setTimeout(function(){ el.remove(); }, 2600);
-          }, i * 40);
-        })(i);
-      }
-    }
   });
 })();
 </script>
