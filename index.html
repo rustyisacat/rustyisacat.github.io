@@ -362,7 +362,7 @@
     <div class="stat"><div class="num">AGPL</div><div class="lbl">open source by default</div></div>
     <div class="stat t3"><div class="num">0</div><div class="lbl">cloud accounts required</div></div>
     <div class="stat"><div class="num" id="statRepos">…</div><div class="lbl">public repos on GitHub</div></div>
-    <div class="stat"><div class="num" id="statStars">…</div><div class="lbl">GitHub stars</div></div>
+    <div class="stat"><div class="num">∞</div><div class="lbl">side quests in progress</div></div>
   </div>
 </section>
 
@@ -562,23 +562,15 @@
 
 (function(){
   var statRepos = document.getElementById('statRepos');
-  var statStars = document.getElementById('statStars');
-  if (!statRepos || !statStars) return;
+  if (!statRepos) return;
 
   fetch('https://api.github.com/users/rustyisacat')
     .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(user){
       statRepos.textContent = user.public_repos;
-      return fetch('https://api.github.com/users/rustyisacat/repos?per_page=100');
-    })
-    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function(repos){
-      var stars = repos.reduce(function(sum, repo){ return sum + (repo.stargazers_count || 0); }, 0);
-      statStars.textContent = stars;
     })
     .catch(function(){
       statRepos.textContent = '7';
-      statStars.textContent = '3';
     });
 })();
 </script>
