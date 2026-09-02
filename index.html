@@ -79,6 +79,12 @@
   }
 
   *{box-sizing:border-box;}
+  a:focus-visible, button:focus-visible, [role="button"]:focus-visible{
+    outline: 3px solid var(--md-primary);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  .card:focus-visible, .avatar-blob:focus-visible{ outline-offset: -3px; }
   body{
     margin:0;
     background:var(--md-surface);
@@ -264,6 +270,27 @@
   :root[data-theme="dark"] .pill,
   :root:not([data-theme="light"]) .pill{ background: rgba(0,0,0,.2);}
 
+  /* ---- tech stack row ---- */
+  .stack-label{ font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600; opacity:.8; margin-top:6px;}
+  .stack-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
+  .stack-item{
+    display:flex; align-items:center; gap:7px; padding:8px 14px 8px 10px; border-radius:100px;
+    background:rgba(255,255,255,.35); font-size:.85rem; font-weight:500;
+    transition: transform .15s cubic-bezier(.34,1.56,.64,1);
+  }
+  .stack-item:hover{ transform:translateY(-2px) rotate(1deg); }
+  .stack-item .symbol{ font-size:19px; }
+  :root[data-theme="dark"] .stack-item,
+  :root:not([data-theme="light"]) .stack-item{ background: rgba(0,0,0,.2);}
+
+  /* ---- meta line ---- */
+  .meta-line{
+    max-width:1080px; margin:0 auto; padding:0 clamp(16px,4vw,48px) 8px;
+    display:flex; gap:20px; flex-wrap:wrap; font-size:.85rem; color:var(--md-on-surface-variant);
+  }
+  .meta-line span{ display:flex; align-items:center; gap:6px; }
+  .meta-line .symbol{ font-size:18px; }
+
   footer{
     max-width:1080px; margin:40px auto 0; padding:28px clamp(16px,4vw,48px) 48px;
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
@@ -306,7 +333,7 @@
     </div>
     <p class="poke-hint">psst, the blob is clickable 👆</p>
   </div>
-  <div class="avatar-blob" id="blobPoke" role="button" aria-label="Poke the blob">
+  <div class="avatar-blob" id="blobPoke" role="button" tabindex="0" aria-label="Poke the blob">
     <span class="speech-bubble" id="blobSpeech">hi!</span>
     <svg viewBox="0 0 200 200">
       <defs>
@@ -332,7 +359,8 @@
     <div class="stat t2"><div class="num">100%</div><div class="lbl">self-hosted</div></div>
     <div class="stat"><div class="num">AGPL</div><div class="lbl">open source by default</div></div>
     <div class="stat t3"><div class="num">0</div><div class="lbl">cloud accounts required</div></div>
-    <div class="stat"><div class="num">∞</div><div class="lbl">side quests in progress</div></div>
+    <div class="stat"><div class="num" id="statRepos">…</div><div class="lbl">public repos on GitHub</div></div>
+    <div class="stat"><div class="num" id="statStars">…</div><div class="lbl">GitHub stars</div></div>
   </div>
 </section>
 
@@ -352,6 +380,16 @@
       <span class="pill">Python tooling</span>
       <span class="pill">Self-hosted infra</span>
       <span class="pill">GTK4 / libadwaita</span>
+    </div>
+    <div class="stack-label">Tech I reach for</div>
+    <div class="stack-row">
+      <span class="stack-item"><span class="symbol">terminal</span> Python</span>
+      <span class="stack-item"><span class="symbol">phone_android</span> Kotlin</span>
+      <span class="stack-item"><span class="symbol">code</span> JavaScript</span>
+      <span class="stack-item"><span class="symbol">widgets</span> GTK4 / libadwaita</span>
+      <span class="stack-item"><span class="symbol">computer</span> Hyprland</span>
+      <span class="stack-item"><span class="symbol">dns</span> Self-hosted infra</span>
+      <span class="stack-item"><span class="symbol">policy</span> AGPL</span>
     </div>
   </div>
 </section>
@@ -451,6 +489,11 @@
   </div>
 </section>
 
+<div class="meta-line">
+  <span><span class="symbol">construction</span> Currently building: homelab tooling and Discord bots</span>
+  <span><span class="symbol">update</span> Last updated <span id="lastUpdated">recently</span></span>
+</div>
+
 <footer>
   <span>Designed in Material You. Built with plain HTML, CSS, and JS, no frameworks, mostly out of spite for bloated web frameworks.</span>
   <a href="https://github.com/rustyisacat" target="_blank" rel="noopener">github.com/rustyisacat ↗</a>
@@ -492,7 +535,7 @@
   var phrases = ['boop!', 'wheee', 'sup', 'you found me', 'stop that', 'again?? ok', 'poke poke', '⚡'];
   var speechTimer;
 
-  blob.addEventListener('click', function(){
+  function poke(){
     blob.classList.remove('poked');
     void blob.offsetWidth;
     blob.classList.add('poked');
@@ -500,7 +543,42 @@
     speech.classList.add('show');
     clearTimeout(speechTimer);
     speechTimer = setTimeout(function(){ speech.classList.remove('show'); }, 1200);
+  }
+
+  blob.addEventListener('click', poke);
+  blob.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); poke(); }
   });
+})();
+
+(function(){
+  var LAST_UPDATED = '2026-09-02';
+  var d = new Date(LAST_UPDATED + 'T00:00:00');
+  var label = d.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+  var el = document.getElementById('lastUpdated');
+  if (el) el.textContent = label;
+})();
+
+(function(){
+  var statRepos = document.getElementById('statRepos');
+  var statStars = document.getElementById('statStars');
+  if (!statRepos || !statStars) return;
+
+  fetch('https://api.github.com/users/rustyisacat')
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(user){
+      statRepos.textContent = user.public_repos;
+      return fetch('https://api.github.com/users/rustyisacat/repos?per_page=100');
+    })
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(repos){
+      var stars = repos.reduce(function(sum, repo){ return sum + (repo.stargazers_count || 0); }, 0);
+      statStars.textContent = stars;
+    })
+    .catch(function(){
+      statRepos.textContent = '7';
+      statStars.textContent = '3';
+    });
 })();
 </script>
 
