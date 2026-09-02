@@ -108,8 +108,8 @@
   }
   .appbar .brand{ font-weight:500; font-size:1.05rem; letter-spacing:.02em; display:flex; align-items:center; gap:10px;}
   .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--md-primary);}
-  .brand .wave{ display:inline-block; transform-origin:70% 70%; transition:transform .2s ease;}
-  .brand:hover .wave{ animation: wave .7s ease-in-out 2; }
+  .wave{ display:inline-block; transform-origin:70% 70%; transition:transform .2s ease;}
+  .say-hi:hover .wave{ animation: wave .7s ease-in-out 2; }
   @keyframes wave{
     0%,100%{ transform:rotate(0deg); }
     25%{ transform:rotate(16deg); }
@@ -224,7 +224,7 @@
     transition: box-shadow .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1), border-color .2s ease;
     position:relative; overflow:hidden;
   }
-  .card:hover{ box-shadow:var(--md-shadow-lg); transform:translateY(-4px) rotate(-0.5deg); border-color:transparent;}
+  .card:hover{ box-shadow:var(--md-shadow-lg); transform:translateY(-4px); border-color:transparent;}
   .card .swatch{
     width:48px; height:48px; border-radius:16px; display:flex; align-items:center; justify-content:center;
     color:var(--md-on-primary); background:var(--md-primary);
@@ -281,7 +281,7 @@
 <body>
 
 <div class="appbar">
-  <div class="brand"><span class="dot"></span> Rusty <span class="wave">👋</span></div>
+  <div class="brand"><span class="dot"></span> Rusty</div>
   <nav>
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
@@ -441,7 +441,7 @@
 <section id="contact">
   <div class="section-head">
     <div>
-      <h2>Say hi 👋</h2>
+      <h2 class="say-hi">Say hi <span class="wave">👋</span></h2>
       <p>Best reached on GitHub or Discord.</p>
     </div>
   </div>
