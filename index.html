@@ -7,7 +7,7 @@
 <meta name="description" content="Rusty Chaffin. Self-hosting, Linux desktop tooling, and homelab projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light dark;
@@ -89,6 +89,13 @@
   h1,h2,h3,.headline{font-family:'Google Sans Text','Roboto',system-ui,sans-serif;}
   a{color:inherit;}
   .mono{font-family:'Roboto Mono', monospace;}
+  .symbol{
+    font-family:'Material Symbols Rounded'; font-weight:normal; font-style:normal;
+    font-size:24px; line-height:1; letter-spacing:normal; text-transform:none;
+    display:inline-block; white-space:nowrap; word-wrap:normal; direction:ltr;
+    -webkit-font-feature-settings:'liga'; -webkit-font-smoothing:antialiased;
+    font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
 
   /* ---- top app bar ---- */
   .appbar{
@@ -111,16 +118,24 @@
   }
   .appbar nav{display:flex; gap:4px;}
   .appbar nav a{
-    padding:8px 16px; border-radius:100px; text-decoration:none;
-    font-size:.9rem; color:var(--md-on-surface-variant);
+    position:relative; padding:8px 16px; border-radius:100px; text-decoration:none;
+    font-size:.9rem; font-weight:500; color:var(--md-on-surface-variant);
     transition: background .15s ease, color .15s ease;
   }
-  .appbar nav a:hover{ background:var(--md-surface-container-high); color:var(--md-on-surface);}
-  .theme-toggle{
-    border:1px solid var(--md-outline-variant); background:var(--md-surface-container-low);
-    color:var(--md-on-surface); border-radius:100px; padding:8px 14px; font-size:.85rem;
-    cursor:pointer; display:flex; align-items:center; gap:6px;
+  .appbar nav a::before{
+    content:''; position:absolute; inset:0; border-radius:100px;
+    background:var(--md-primary); opacity:0; transition:opacity .15s ease;
   }
+  .appbar nav a:hover{ color:var(--md-on-surface);}
+  .appbar nav a:hover::before{ opacity:.08; }
+  .theme-toggle{
+    border:none; background:var(--md-secondary-container);
+    color:var(--md-on-secondary-container); border-radius:100px; padding:8px 16px 8px 12px; font-size:.85rem;
+    font-weight:500; cursor:pointer; display:flex; align-items:center; gap:6px;
+    transition: box-shadow .15s ease, transform .15s cubic-bezier(.34,1.56,.64,1);
+  }
+  .theme-toggle:hover{ box-shadow:var(--md-shadow); transform:translateY(-1px); }
+  .theme-toggle .symbol{ font-size:20px; }
 
   /* ---- hero ---- */
   .hero{
@@ -138,16 +153,21 @@
   .poke-hint{ font-size:.82rem; color:var(--md-on-surface-variant); opacity:.7; margin:18px 0 0 !important; }
   .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
   .btn{
-    display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:100px;
+    position:relative; display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:100px;
     font-weight:500; font-size:.95rem; text-decoration:none; cursor:pointer; border:none;
     transition: box-shadow .15s ease, transform .15s cubic-bezier(.34,1.56,.64,1);
+    overflow:hidden;
   }
+  .btn::before{
+    content:''; position:absolute; inset:0; background:currentColor; opacity:0; transition:opacity .15s ease;
+  }
+  .btn:hover::before{ opacity:.1; }
   .btn:hover{ transform:translateY(-2px) rotate(-1deg); }
   .btn:active{transform:scale(.98);}
   .btn-filled{ background:var(--md-primary); color:var(--md-on-primary); box-shadow:var(--md-shadow);}
   .btn-filled:hover{ box-shadow:var(--md-shadow-lg);}
   .btn-tonal{ background:var(--md-secondary-container); color:var(--md-on-secondary-container);}
-  .btn-tonal:hover{ filter:brightness(1.05);}
+  .btn .symbol{ font-size:20px; }
 
   .avatar-blob{
     width:min(240px,40vw); aspect-ratio:1; position:relative; justify-self:end;
@@ -184,9 +204,14 @@
 
   /* ---- stats strip ---- */
   .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:2px; background:var(--md-outline-variant); border-radius:24px; overflow:hidden; margin:8px 0 8px;}
-  .stat{ background:var(--md-surface-container-low); padding:22px 18px; text-align:left;}
-  .stat .num{ font-size:1.9rem; font-weight:700; color:var(--md-primary); font-family:'Google Sans Text';}
-  .stat .lbl{ font-size:.82rem; color:var(--md-on-surface-variant); margin-top:2px;}
+  .stat{ padding:22px 18px; text-align:left; background:var(--md-surface-container-low); color:var(--md-on-surface);}
+  .stat .num{ font-size:1.9rem; font-weight:700; font-family:'Google Sans Text';}
+  .stat .lbl{ font-size:.82rem; margin-top:2px; opacity:.8;}
+  .stat.t1{ background:var(--md-primary-container); color:var(--md-on-primary-container);}
+  .stat.t2{ background:var(--md-secondary-container); color:var(--md-on-secondary-container);}
+  .stat.t3{ background:var(--md-tertiary-container); color:var(--md-on-tertiary-container);}
+  .stat.t1 .num, .stat.t2 .num, .stat.t3 .num{ color:inherit; }
+  .stat:not(.t1):not(.t2):not(.t3) .num{ color:var(--md-primary); }
 
   /* ---- project cards ---- */
   .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px;}
@@ -195,16 +220,18 @@
     border:1px solid var(--md-outline-variant);
     border-radius:28px; padding:24px; text-decoration:none; color:inherit;
     display:flex; flex-direction:column; gap:12px; min-height:230px;
+    box-shadow:var(--md-shadow);
     transition: box-shadow .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1), border-color .2s ease;
     position:relative; overflow:hidden;
   }
   .card:hover{ box-shadow:var(--md-shadow-lg); transform:translateY(-4px) rotate(-0.5deg); border-color:transparent;}
   .card .swatch{
-    width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center;
-    font-size:1.3rem; color:var(--md-on-primary); background:var(--md-primary);
-    transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+    width:48px; height:48px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+    color:var(--md-on-primary); background:var(--md-primary);
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1), border-radius .2s ease;
   }
-  .card:hover .swatch{ transform:scale(1.1) rotate(-6deg); }
+  .card .swatch .symbol{ font-size:26px; }
+  .card:hover .swatch{ transform:scale(1.1) rotate(-6deg); border-radius:22px; }
   .card h3{ margin:0; font-size:1.18rem; font-weight:500;}
   .card p{ margin:0; color:var(--md-on-surface-variant); font-size:.92rem; line-height:1.55; flex:1;}
   .card .tags{ display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;}
@@ -261,7 +288,7 @@
     <a href="#contact">Contact</a>
   </nav>
   <button class="theme-toggle" id="themeToggle" type="button">
-    <span id="themeIcon">◐</span> <span id="themeLabel">Auto</span>
+    <span class="symbol" id="themeIcon">brightness_auto</span> <span id="themeLabel">Auto</span>
   </button>
 </div>
 
@@ -274,8 +301,8 @@
       no accounts I don't control. Mostly I just really like making my computer
       do exactly what I want. Below is what I've actually shipped.</p>
     <div class="cta-row">
-      <a class="btn btn-filled" href="#projects">See the projects ↓</a>
-      <a class="btn btn-tonal" href="https://github.com/rustyisacat" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-filled" href="#projects">See the projects <span class="symbol">arrow_downward</span></a>
+      <a class="btn btn-tonal" href="https://github.com/rustyisacat" target="_blank" rel="noopener">GitHub <span class="symbol">open_in_new</span></a>
     </div>
     <p class="poke-hint">psst, the blob is clickable 👆</p>
   </div>
@@ -301,10 +328,10 @@
 
 <section>
   <div class="stats">
-    <div class="stat"><div class="num">7</div><div class="lbl">shipped projects</div></div>
-    <div class="stat"><div class="num">100%</div><div class="lbl">self-hosted</div></div>
+    <div class="stat t1"><div class="num">7</div><div class="lbl">shipped projects</div></div>
+    <div class="stat t2"><div class="num">100%</div><div class="lbl">self-hosted</div></div>
     <div class="stat"><div class="num">AGPL</div><div class="lbl">open source by default</div></div>
-    <div class="stat"><div class="num">0</div><div class="lbl">cloud accounts required</div></div>
+    <div class="stat t3"><div class="num">0</div><div class="lbl">cloud accounts required</div></div>
     <div class="stat"><div class="num">∞</div><div class="lbl">side quests in progress</div></div>
   </div>
 </section>
@@ -339,7 +366,7 @@
   <div class="grid">
 
     <a class="card c1" href="https://rustyisacat.github.io/caelback/" target="_blank" rel="noopener">
-      <div class="swatch">⌘</div>
+      <div class="swatch"><span class="symbol">terminal</span></div>
       <h3>caelback</h3>
       <p>A stdlib-only Python CLI that snapshots and restores my entire Hyprland/Caelestia
         setup, so I can dotfile-hop to any other rice and always get back to exactly
@@ -349,7 +376,7 @@
     </a>
 
     <a class="card c2" href="https://rustyisacat.github.io/hyprform/" target="_blank" rel="noopener">
-      <div class="swatch">▤</div>
+      <div class="swatch"><span class="symbol">tune</span></div>
       <h3>Hyprform</h3>
       <p>A native GTK4/libadwaita GUI for editing Hyprland configs, both classic
         <code class="mono">.conf</code> syntax and Hyprland's newer Lua config API,
@@ -359,7 +386,7 @@
     </a>
 
     <a class="card c3" href="https://rustyisacat.github.io/livewall/" target="_blank" rel="noopener">
-      <div class="swatch">▧</div>
+      <div class="swatch"><span class="symbol">wallpaper</span></div>
       <h3>LiveWall</h3>
       <p>A wallpaper library manager for Hyprland with tags, favorites, search, and
         duplicate detection, layered on top of animated-wallpaper rendering, plus a
@@ -369,7 +396,7 @@
     </a>
 
     <a class="card c4" href="https://rustyisacat.github.io/echo-dashboard/" target="_blank" rel="noopener">
-      <div class="swatch">⌗</div>
+      <div class="swatch"><span class="symbol">hub</span></div>
       <h3>Aurora + echo-dashboard</h3>
       <p>A repurposed Amazon Echo Show turned into a self-hosted bedside display.
         An Android backend on my phone feeds live weather, alarms, and notifications
@@ -379,7 +406,7 @@
     </a>
 
     <a class="card c5" href="https://rustyisacat.github.io/echo-dashboard-solo/" target="_blank" rel="noopener">
-      <div class="swatch">☾</div>
+      <div class="swatch"><span class="symbol">bedtime</span></div>
       <h3>echo-dashboard-solo</h3>
       <p>A phone-free fork of the bedside display above, fully standalone, with its
         own journal, habits, reminders, sleep insights, and an offline star map.
@@ -389,7 +416,7 @@
     </a>
 
     <a class="card c6" href="https://rustyisacat.github.io/focusguard/" target="_blank" rel="noopener">
-      <div class="swatch">🛡</div>
+      <div class="swatch"><span class="symbol">shield</span></div>
       <h3>FocusGuard</h3>
       <p>A real, enforced focus mode for Hyprland. Pick apps in a native GTK4
         window, schedule or block them on the spot, and a background daemon
@@ -399,7 +426,7 @@
     </a>
 
     <a class="card c1" href="https://github.com/rustyisacat" target="_blank" rel="noopener">
-      <div class="swatch">＋</div>
+      <div class="swatch"><span class="symbol">add</span></div>
       <h3>...and more on GitHub</h3>
       <p>A growing homelab of smaller self-hosted tools: status dashboards, backup
         automation, a LAN scanner, and the odd Discord bot, all built the same way,
@@ -437,7 +464,7 @@
   var icon = document.getElementById('themeIcon');
   var label = document.getElementById('themeLabel');
   var order = ['auto','light','dark'];
-  var icons = {auto:'◐', light:'☀', dark:'☾'};
+  var icons = {auto:'brightness_auto', light:'light_mode', dark:'dark_mode'};
   var labels = {auto:'Auto', light:'Light', dark:'Dark'};
 
   function apply(mode){
