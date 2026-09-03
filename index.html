@@ -306,6 +306,34 @@
   :root[data-theme="dark"] .stack-item,
   :root:not([data-theme="light"]) .stack-item{ background: rgba(0,0,0,.2);}
 
+  /* ---- bio card ---- */
+  .bio-card{
+    background:var(--md-tertiary-container); color:var(--md-on-tertiary-container);
+    border-radius:28px; padding:clamp(24px,4vw,40px); margin-top:16px;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .bio-card:hover{ transform:rotate(-0.4deg); }
+  .bio-head{ display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+  .bio-avatar{
+    width:56px; height:56px; border-radius:18px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Google Sans Text'; font-weight:700; font-size:1.5rem; color:var(--md-on-primary);
+    background: linear-gradient(135deg, var(--md-primary), var(--md-secondary));
+    transition: border-radius .2s cubic-bezier(.34,1.56,.64,1), transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .bio-card:hover .bio-avatar{ border-radius:50%; transform:rotate(10deg); }
+  .bio-head h2{ margin:0; font-size:1.3rem; font-weight:700; }
+  .bio-tagline{ margin:2px 0 0; font-size:.92rem; opacity:.85; }
+  .bio-stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:2px; background:rgba(0,0,0,.12); border-radius:18px; overflow:hidden; }
+  :root[data-theme="dark"] .bio-stats,
+  :root:not([data-theme="light"]) .bio-stats{ background:rgba(0,0,0,.3); }
+  .bio-stat{
+    display:flex; align-items:flex-start; gap:10px; padding:12px 16px;
+    background:var(--md-tertiary-container);
+  }
+  .bio-stat .symbol{ font-size:20px; margin-top:1px; opacity:.85; flex-shrink:0; }
+  .bio-stat .k{ display:block; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; font-weight:600; opacity:.7; }
+  .bio-stat .v{ display:block; font-size:.9rem; font-weight:500; line-height:1.4; }
+
   /* ---- meta line ---- */
   .meta-line{
     max-width:1080px; margin:0 auto; padding:0 clamp(16px,4vw,48px) 8px;
@@ -416,6 +444,24 @@
       <span class="stack-item"><span class="symbol">computer</span> Hyprland</span>
       <span class="stack-item"><span class="symbol">dns</span> Self-hosted infra</span>
       <span class="stack-item"><span class="symbol">policy</span> AGPL</span>
+    </div>
+  </div>
+
+  <div class="bio-card">
+    <div class="bio-head">
+      <div class="bio-avatar">R</div>
+      <div>
+        <h2>Character Sheet</h2>
+        <p class="bio-tagline">Rusty, Level &infin; Homelab Wizard</p>
+      </div>
+    </div>
+    <div class="bio-stats">
+      <div class="bio-stat"><span class="symbol">auto_awesome</span><span><span class="k">Class</span><span class="v">Self-Hosting Sorcerer</span></span></div>
+      <div class="bio-stat"><span class="symbol">bolt</span><span><span class="k">Alignment</span><span class="v">Chaotic good</span></span></div>
+      <div class="bio-stat"><span class="symbol">terminal</span><span><span class="k">Special move</span><span class="v">Rewrites a perfectly working script for fun</span></span></div>
+      <div class="bio-stat"><span class="symbol">bug_report</span><span><span class="k">Weakness</span><span class="v">A box labeled "misc cables"</span></span></div>
+      <div class="bio-stat"><span class="symbol">pets</span><span><span class="k">Companion</span><span class="v">A cat, obviously</span></span></div>
+      <div class="bio-stat"><span class="symbol">location_on</span><span><span class="k">Spawn point</span><span class="v">Somewhere behind three monitors</span></span></div>
     </div>
   </div>
 </section>
