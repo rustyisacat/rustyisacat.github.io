@@ -395,6 +395,7 @@
   }
   .meta-line span{ display:flex; align-items:center; gap:6px; }
   .meta-line .symbol{ font-size:18px; }
+  .meta-line .visits img{ height:20px; border-radius:4px; vertical-align:middle; }
 
   footer{
     max-width:1080px; margin:40px auto 0; padding:28px clamp(16px,4vw,48px) 48px;
@@ -434,7 +435,7 @@
   <div>
     <span class="eyebrow">chaotic good, extremely online, hack the world!</span>
     <h1>I make things that live entirely on <b>my own hardware</b>.</h1>
-    <p>Hi, I'm Rusty. Desktop tools, Android apps, homelab servers, whatever a
+    <p><span id="greeting">Hi, I'm Rusty.</span> Desktop tools, Android apps, homelab servers, whatever a
       given problem needs. If a good tool for something doesn't exist, or the
       existing one wants a cloud account I don't want to give it, I just build
       my own. Below is what's actually shipped and running.</p>
@@ -641,6 +642,8 @@
 <div class="meta-line">
   <span><span class="symbol">construction</span> Currently building: FocusGuard and the echo-dashboards</span>
   <span><span class="symbol">update</span> Last updated <span id="lastUpdated">recently</span></span>
+  <span><span class="symbol">bolt</span> Last shipped <span id="lastShipped">recently</span></span>
+  <span class="visits"><span class="symbol">visibility</span> <img src="https://visitor-badge.laobi.icu/badge?page_id=rusty.is-a.dev&text=site+visits" alt="site visit count" loading="lazy"></span>
 </div>
 
 <footer>
@@ -783,6 +786,73 @@
     .catch(function(){
       statRepos.textContent = '7';
     });
+})();
+
+(function(){
+  var el = document.getElementById('greeting');
+  if (!el) return;
+  var hour = new Date().getHours();
+  var text;
+  if (hour >= 5 && hour < 12) text = "Morning. I'm Rusty.";
+  else if (hour >= 12 && hour < 17) text = "Hi, I'm Rusty.";
+  else if (hour >= 17 && hour < 21) text = "Evening. I'm Rusty.";
+  else if (hour >= 21 && hour < 24) text = "Hey, I'm Rusty, still up too.";
+  else text = "You're up late. I'm Rusty, and so am I apparently.";
+  el.textContent = text;
+})();
+
+(function(){
+  var el = document.getElementById('lastShipped');
+  if (!el) return;
+
+  function timeAgo(iso){
+    var diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    var units = [[31536000,'y'],[2592000,'mo'],[86400,'d'],[3600,'h'],[60,'m']];
+    for (var i = 0; i < units.length; i++){
+      var val = Math.floor(diff / units[i][0]);
+      if (val >= 1) return val + units[i][1] + ' ago';
+    }
+    return 'just now';
+  }
+
+  fetch('https://api.github.com/users/rustyisacat/repos?sort=pushed&per_page=10')
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(repos){
+      if (!repos.length) throw new Error('no repos');
+      el.textContent = timeAgo(repos[0].pushed_at);
+    })
+    .catch(function(){
+      el.textContent = 'recently';
+    });
+})();
+
+(function(){
+  var wrap = document.getElementById('blobPoke');
+  if (!wrap) return;
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  setTimeout(function(){ wrap.style.animation = 'none'; }, 900);
+
+  var raf = null;
+  document.addEventListener('mousemove', function(e){
+    if (raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = null;
+      var rect = wrap.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      var dx = (e.clientX - cx) / (window.innerWidth / 2);
+      var dy = (e.clientY - cy) / (window.innerHeight / 2);
+      dx = Math.max(-1, Math.min(1, dx));
+      dy = Math.max(-1, Math.min(1, dy));
+      wrap.style.transform = 'translate(' + (dx * 8) + 'px,' + (dy * 6) + 'px) rotate(' + (dx * 3) + 'deg)';
+    });
+  }, {passive:true});
+
+  document.addEventListener('mouseleave', function(){
+    wrap.style.transform = '';
+  });
 })();
 </script>
 
