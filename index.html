@@ -347,9 +347,9 @@
       <a class="btn btn-filled" href="#projects">See the projects <span class="symbol">arrow_downward</span></a>
       <a class="btn btn-tonal" href="https://github.com/rustyisacat" target="_blank" rel="noopener">GitHub <span class="symbol">open_in_new</span></a>
     </div>
-    <p class="poke-hint">psst, the blob is clickable 👆</p>
+    <p class="poke-hint">psst, it's clickable 👆</p>
   </div>
-  <div class="avatar-blob" id="blobPoke" role="button" tabindex="0" aria-label="Poke the blob">
+  <div class="avatar-blob" id="blobPoke" role="button" tabindex="0" aria-label="Poke the little terminal">
     <span class="speech-bubble" id="blobSpeech">hi!</span>
     <svg viewBox="0 0 200 200">
       <defs>
@@ -358,13 +358,17 @@
           <stop offset="100%" stop-color="var(--md-tertiary)"/>
         </linearGradient>
       </defs>
-      <path fill="url(#blob)" transform="translate(100 100) scale(1.3)">
-        <animate attributeName="d" dur="10s" repeatCount="indefinite"
-          values="M50,-60C63,-51,70,-33,73,-14C76,5,75,26,64,42C53,58,32,69,10,71C-12,73,-35,66,-51,52C-67,38,-76,17,-75,-4C-74,-25,-63,-46,-46,-58C-29,-70,-6,-73,14,-70C34,-67,37,-69,50,-60Z;
-                  M46,-56C59,-48,67,-30,70,-11C73,8,71,28,60,44C49,60,29,72,7,74C-15,76,-38,68,-53,53C-68,38,-76,16,-73,-4C-70,-24,-57,-42,-41,-53C-25,-64,-6,-68,12,-70C30,-72,33,-64,46,-56Z;
-                  M52,-63C67,-54,74,-35,77,-15C80,5,79,27,68,44C57,61,34,73,11,75C-13,77,-37,70,-54,55C-71,40,-80,18,-79,-4C-78,-26,-66,-48,-48,-61C-30,-74,-6,-77,15,-74C36,-71,37,-72,52,-63Z;
-                  M50,-60C63,-51,70,-33,73,-14C76,5,75,26,64,42C53,58,32,69,10,71C-12,73,-35,66,-51,52C-67,38,-76,17,-75,-4C-74,-25,-63,-46,-46,-58C-29,-70,-6,-73,14,-70C34,-67,37,-69,50,-60Z"/>
-      </path>
+      <rect x="72" y="146" width="56" height="10" rx="5" fill="url(#blob)"/>
+      <rect x="92" y="130" width="16" height="18" fill="url(#blob)"/>
+      <rect x="26" y="32" width="148" height="102" rx="18" fill="url(#blob)"/>
+      <rect x="42" y="48" width="116" height="70" rx="9" fill="var(--md-surface)"/>
+      <path d="M56,68 L68,80 L56,92" fill="none" stroke="var(--md-on-surface-variant)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="76" y="86" width="30" height="7" rx="3.5" fill="var(--md-on-surface-variant)"/>
+      <rect x="56" y="102" width="52" height="6" rx="3" fill="var(--md-on-surface-variant)" opacity=".45"/>
+      <rect x="56" y="114" width="34" height="6" rx="3" fill="var(--md-on-surface-variant)" opacity=".45"/>
+      <rect x="113" y="83" width="9" height="13" fill="var(--md-primary)">
+        <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.45;0.5;0.95;1" dur="1.1s" repeatCount="indefinite"/>
+      </rect>
     </svg>
   </div>
 </div>
