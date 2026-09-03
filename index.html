@@ -387,6 +387,38 @@
   .bio-card .fun-fact{
     display:inline-block; font-style:italic; opacity:.85;
   }
+  .fact-btn{
+    display:inline-flex; align-items:center; gap:8px; margin-top:16px; padding:10px 18px;
+    border:none; border-radius:100px; background:rgba(255,255,255,.35); color:inherit;
+    font-family:inherit; font-size:.9rem; font-weight:600; cursor:pointer;
+    transition: transform .15s cubic-bezier(.34,1.56,.64,1);
+  }
+  .fact-btn:hover{ transform:translateY(-2px) rotate(-1deg); }
+  .fact-btn .symbol{ font-size:19px; }
+  :root[data-theme="dark"] .fact-btn,
+  :root:not([data-theme="light"]) .fact-btn{ background:rgba(0,0,0,.2); }
+  .fact-display{
+    margin:14px 0 0; padding:12px 16px; border-radius:14px; background:rgba(0,0,0,.1);
+    font-size:.92rem; line-height:1.6; opacity:0; transform:translateY(-4px);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .fact-display.show{ opacity:1; transform:translateY(0); }
+  :root[data-theme="dark"] .fact-display,
+  :root:not([data-theme="light"]) .fact-display{ background:rgba(0,0,0,.25); }
+
+  /* ---- now card ---- */
+  .now-card{
+    background:var(--md-surface-container-low); border:1px solid var(--md-outline-variant);
+    border-radius:28px; padding:22px clamp(22px,3.5vw,32px); margin-top:16px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .now-head{
+    display:flex; align-items:center; gap:8px; font-size:.78rem; letter-spacing:.06em;
+    text-transform:uppercase; font-weight:700; color:var(--md-primary); flex-shrink:0;
+  }
+  .now-head .symbol.pulse{ animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.5; transform:scale(1.15);} }
+  .now-card p{ margin:0; font-size:.95rem; color:var(--md-on-surface-variant); flex:1; min-width:200px; }
 
   /* ---- meta line ---- */
   .meta-line{
@@ -541,6 +573,15 @@
       earbuds are my NSA Listening Device, my watch is my NSA Wrist
       Communicator, and my phone is, naturally, my NSA Remote Access Point.
       <span class="fun-fact">Fun fact: I own more USB cables than I can identify.</span></p>
+    <button class="fact-btn" id="factBtn" type="button">
+      <span class="symbol">casino</span> Give me a random fact
+    </button>
+    <p class="fact-display" id="factDisplay" hidden></p>
+  </div>
+
+  <div class="now-card" id="nowCard">
+    <div class="now-head"><span class="symbol pulse">bolt</span> Right now</div>
+    <p id="nowText">&hellip;</p>
   </div>
 </section>
 
@@ -640,7 +681,7 @@
 </section>
 
 <div class="meta-line">
-  <span><span class="symbol">construction</span> Currently building: FocusGuard and the echo-dashboards</span>
+  <span><span class="symbol">construction</span> Currently building: <span id="buildingText">FocusGuard and the echo-dashboards</span></span>
   <span><span class="symbol">update</span> Last updated <span id="lastUpdated">recently</span></span>
   <span><span class="symbol">bolt</span> Last shipped <span id="lastShipped">recently</span></span>
   <span class="visits"><span class="symbol">visibility</span> <img src="https://visitor-badge.laobi.icu/badge?page_id=rusty.is-a.dev&text=site+visits" alt="site visit count" loading="lazy"></span>
@@ -852,6 +893,50 @@
 
   document.addEventListener('mouseleave', function(){
     wrap.style.transform = '';
+  });
+})();
+
+(function(){
+  var buildingEl = document.getElementById('buildingText');
+  var nowEl = document.getElementById('nowText');
+  if (!buildingEl && !nowEl) return;
+
+  fetch('data/status.json')
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data){
+      if (nowEl && data.now) nowEl.textContent = data.now;
+      if (buildingEl && data.building) buildingEl.textContent = data.building;
+    })
+    .catch(function(){
+      if (nowEl) nowEl.textContent = "Whatever's on fire in my homelab this week.";
+    });
+})();
+
+(function(){
+  var btn = document.getElementById('factBtn');
+  var display = document.getElementById('factDisplay');
+  if (!btn || !display) return;
+
+  var facts = [
+    "I read a project's entire README before installing it, then read the source anyway.",
+    "My computer, earbuds, watch, and phone are all named after fictional surveillance hardware.",
+    "I have two cats who are deeply unimpressed by all of this.",
+    "I will rewrite a script that already works because I thought of a slightly better way at 1am.",
+    "Every project on this site gets tested against my own live setup before I call it done.",
+    "I keep a homelab of always-on servers doing the unglamorous stuff: backups, dashboards, a Discord bot.",
+    "I own more USB cables than I can identify.",
+    "My Hyprland config gets tuned way more often than it strictly needs to be."
+  ];
+  var lastIndex = -1;
+
+  btn.addEventListener('click', function(){
+    var idx;
+    do { idx = Math.floor(Math.random() * facts.length); } while (idx === lastIndex && facts.length > 1);
+    lastIndex = idx;
+    display.textContent = facts[idx];
+    display.hidden = false;
+    void display.offsetWidth;
+    display.classList.add('show');
   });
 })();
 </script>

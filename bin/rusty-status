@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""Update the 'now' or 'building' line on rusty.is-a.dev and push it live.
+
+Usage:
+    rusty-status now "Tuning a Hyprland config for the hundredth time."
+    rusty-status building "FocusGuard and the echo-dashboards"
+    rusty-status show
+"""
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+STATUS_FILE = REPO / "data" / "status.json"
+VALID_KEYS = {"now", "building"}
+
+
+def load():
+    if STATUS_FILE.exists():
+        return json.loads(STATUS_FILE.read_text())
+    return {"now": "", "building": ""}
+
+
+def save(data):
+    STATUS_FILE.write_text(json.dumps(data, indent=2) + "\n")
+
+
+def run(cmd):
+    result = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True)
+    if result.returncode != 0:
+        sys.stderr.write(result.stdout + result.stderr)
+        sys.exit(result.returncode)
+    return result.stdout.strip()
+
+
+def main():
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(1)
+
+    command = sys.argv[1]
+
+    if command == "show":
+        data = load()
+        print(f"now:      {data.get('now', '')}")
+        print(f"building: {data.get('building', '')}")
+        return
+
+    if command not in VALID_KEYS:
+        print(f"Unknown field '{command}'. Use 'now', 'building', or 'show'.")
+        sys.exit(1)
+
+    if len(sys.argv) < 3:
+        print(f"Usage: rusty-status {command} \"new text\"")
+        sys.exit(1)
+
+    text = " ".join(sys.argv[2:])
+    data = load()
+    data[command] = text
+    save(data)
+
+    run(["git", "add", "data/status.json"])
+    diff = run(["git", "diff", "--cached", "--name-only"])
+    if not diff:
+        print("No change (text was already set to that).")
+        return
+
+    run(["git", "commit", "-m", f"Update {command} status"])
+    run(["git", "push"])
+    print(f"Updated {command} -> {text!r}, pushed live.")
+
+
+if __name__ == "__main__":
+    main()
