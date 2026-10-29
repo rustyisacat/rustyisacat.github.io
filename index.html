@@ -802,12 +802,30 @@
     var HOME = new THREE.Vector3(-0.3, 1.6, -0.3);
     var target = HOME.clone(), targetGoal = HOME.clone();
     var zoom = .6, zoomGoal = 1, focused = null;
+    // fit the whole room (walls included) into the section at any size:
+    // project the room's corners onto the camera's right/up axes and size the view to them
+    var VIEW_DIR = OFFSET.clone().normalize();
+    var VIEW_RIGHT = new THREE.Vector3(0,1,0).cross(VIEW_DIR).normalize();
+    var VIEW_UP = VIEW_DIR.clone().cross(VIEW_RIGHT).normalize();
+    var ROOM_CORNERS = [];
+    [-6.3, 6].forEach(function(x){ [-6.3, 6].forEach(function(z){ [-0.4, 7.4].forEach(function(y){ ROOM_CORNERS.push(new THREE.Vector3(x, y, z)); }); }); });
     function frame(){
-      sz = size(); var a = sz.w / sz.h, h = a < 1 ? 17.5 / a : Math.max(16, 22 / a);
+      sz = size(); var a = sz.w / sz.h;
+      var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      ROOM_CORNERS.forEach(function(c){
+        var dx = c.dot(VIEW_RIGHT), dy = c.dot(VIEW_UP);
+        minX = Math.min(minX, dx); maxX = Math.max(maxX, dx); minY = Math.min(minY, dy); maxY = Math.max(maxY, dy);
+      });
+      var spanX = maxX - minX, spanY = maxY - minY;
+      var wide = sz.w > 900, portrait = a < 1;
+      // leave room for the intro card: to the left on wide screens, above on portrait ones
+      var usableW = wide ? .8 : .94, usableH = portrait ? .72 : .86;
+      var h = Math.max(spanY / usableH, spanX / (a * usableW));
       cam.left = -h*a/2; cam.right = h*a/2; cam.top = h/2; cam.bottom = -h/2; cam.updateProjectionMatrix();
-      var shift = sz.w > 900 ? h * a * .085 : 0;
-      // portrait: push the room down below the intro card
-      HOME.set(-0.3, 1.6 + (a < 1 ? h * .12 : 0), -0.3).addScaledVector(new THREE.Vector3(1,0,-1).normalize(), -shift);
+      // centre the room's box, then nudge it right (wide) or down (portrait)
+      var cx = (minX + maxX) / 2 - (wide ? h * a * .09 : 0);
+      var cy = (minY + maxY) / 2 + (portrait ? h * .1 : -h * .03);
+      HOME.copy(VIEW_RIGHT).multiplyScalar(cx).addScaledVector(VIEW_UP, cy);
       if (!focused) targetGoal.copy(HOME);
     }
     frame();
