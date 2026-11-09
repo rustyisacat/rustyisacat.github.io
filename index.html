@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rusty</title>
-<meta name="description" content="I make things that live entirely on my own hardware. Wear OS apps, a reborn Echo Show, a TV wall display, Hyprland tools and a homelab that never sleeps.">
+<meta name="description" content="I make things that live entirely on my own hardware. Wear OS apps, a flip phone music player, a TV wall display, Hyprland tools and a homelab that never sleeps.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rusty.is-a.dev/">
 <meta property="og:title" content="Rusty">
@@ -90,26 +90,32 @@
   .go.ghost{ background:transparent; color:var(--fg); border:1px solid var(--rule); margin-left:6px; }
   .visual{ position:relative; opacity:var(--in,0); transform: perspective(1200px) translateY(calc((1 - var(--in,0)) * 80px)) rotateX(calc((1 - var(--in,0)) * 14deg)) scale(calc(.94 + var(--in,0) * .06)); }
 
-  #ch-muse .copy h2{ font-family:'Fredoka',sans-serif; font-weight:600; }
+  #ch-flippod .copy h2{ font-family:'Unbounded',sans-serif; font-weight:700; letter-spacing:-.03em; background:linear-gradient(100deg,#5cb0ff,#b39aff 38%,#ff7fb3 70%,#ffb75a); -webkit-background-clip:text; background-clip:text; color:transparent; }
   #ch-lookout .copy h2{ font-family:'Barlow Condensed',sans-serif; font-weight:700; text-transform:uppercase; font-size:clamp(3rem,7vw,6.6rem); }
   #ch-gambit .copy h2{ font-family:'Playfair Display',serif; font-style:italic; font-weight:700; }
   #ch-flick .copy h2{ font-family:'Unbounded',sans-serif; font-weight:800; letter-spacing:-.05em; }
   #ch-hyprform .copy h2{ font-family:'Cantarell',sans-serif; font-weight:700; }
   #ch-livewall .copy h2{ font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(3rem,7.5vw,7rem); }
 
-  /* 1. muse echo */
-  .echo{ position:relative; width:min(500px,100%); margin:0 auto; aspect-ratio:1.55; background:linear-gradient(180deg,#3c3448,#26202f); border-radius:32px 32px 26px 26px; padding:20px 20px 24px; box-shadow:0 50px 80px -30px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.08); }
-  .echo::after{ content:''; position:absolute; left:12%; right:12%; bottom:-24px; height:28px; border-radius:0 0 50% 50%/0 0 100% 100%; background:#1a1522; z-index:-1; }
-  .echo .scr{ position:relative; height:100%; border-radius:12px; overflow:hidden; background:linear-gradient(170deg,#2c2142,#45305e 60%,#5a3a6a); color:#fff; }
-  .echo .clk{ position:absolute; right:22px; top:26px; text-align:right; font-family:'Fredoka'; font-weight:500; font-size:clamp(1.8rem,4vw,2.8rem); line-height:1; }
-  .echo .clk small{ display:block; font-size:.8rem; opacity:.7; margin-top:4px; }
-  .echo .cap{ position:absolute; left:0; right:0; bottom:12px; text-align:center; font-family:'Fredoka'; font-size:.9rem; opacity:calc(var(--p,0) * 3 - .6); }
-  .echo .puff{ position:absolute; left:9%; top:20%; width:42%; }
-  .echo .puff svg{ width:100%; overflow:visible; }
-  .puffbody{ transform-origin:50% 90%; animation: breathe 3.4s ease-in-out infinite; }
-  @keyframes breathe{ 50%{ transform:scale(1.04,.96); } }
-  .echo .note{ position:absolute; right:22px; bottom:40px; width:38%; background:rgba(255,255,255,.12); border-radius:12px; padding:10px 12px; font-size:.74rem; line-height:1.5; font-family:'Fredoka'; }
-
+  /* 1. flippod */
+  .fpv{ position:relative; width:min(440px,100%); height:min(560px,72vh); margin:0 auto; }
+  .fphone{ position:absolute; left:8%; top:0; width:58%; height:100%; display:flex; flex-direction:column; }
+  .fp-lid, .fp-base{ position:relative; flex:1; border-radius:28px; background:linear-gradient(160deg,#30303b,#17171e 60%,#101015); box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 40px 70px -30px rgba(0,0,0,.7); }
+  .fp-lid{ border-radius:30px 30px 14px 14px; padding:9% 8%; transform-origin:50% 100%; transform:perspective(900px) rotateX(calc((1 - var(--in,0)) * -70deg)); }
+  .fp-base{ border-radius:14px 14px 30px 30px; margin-top:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10%; }
+  .fp-scr{ position:relative; width:100%; height:100%; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 0 0 3px #08080b; }
+  .fp-scr img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .fp-scr .s2{ opacity:clamp(0, (var(--p,0) - .38) * 10, 1); }
+  .fp-scr .s3{ opacity:clamp(0, (var(--p,0) - .62) * 10, 1); }
+  .fp-dpad{ width:34%; height:13%; border-radius:999px; background:linear-gradient(#3a3a46,#24242c); box-shadow:inset 0 1px 0 rgba(255,255,255,.12); }
+  .fp-keys{ display:grid; grid-template-columns:repeat(3,1fr); gap:7px 10px; width:74%; }
+  .fp-keys i{ height:16px; border-radius:7px; background:linear-gradient(#30303a,#1d1d24); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
+  .fp-lidscr{ position:absolute; right:0; bottom:16%; width:40%; aspect-ratio:4/5; border-radius:22px; padding:9px; background:linear-gradient(160deg,#34343f,#1a1a21); box-shadow:0 30px 60px -20px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.14); transform:translateY(calc((1 - var(--in,0)) * 60px)) rotate(4deg); }
+  .fp-vin{ position:relative; height:100%; border-radius:14px; background:radial-gradient(circle at 50% 38%,#1d1d24,#050507 72%); display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; }
+  .fp-ring{ --s:0; width:74%; aspect-ratio:1; border-radius:50%; padding:4px; background:conic-gradient(#5cb0ff,#b39aff,#ff7fb3,#ffb75a calc(var(--s) * 1turn), rgba(255,255,255,.1) calc(var(--s) * 1turn)); }
+  .fp-ring div{ width:100%; height:100%; border-radius:50%; background:radial-gradient(circle,#24242c,#0f0f13 70%); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Unbounded'; font-weight:700; font-size:clamp(.9rem,2vw,1.35rem); color:#fff; }
+  .fp-ring small{ font-family:'JetBrains Mono'; font-size:.5rem; letter-spacing:.08em; opacity:.6; margin-top:3px; text-transform:uppercase; }
+  .fp-stat{ margin-top:8%; font-family:'JetBrains Mono'; font-size:.55rem; color:#fff; opacity:.85; text-align:center; line-height:1.5; }
   /* 2. lookout */
   .tv{ position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; padding:9px; box-shadow:0 0 0 2px #1a1f2c, 0 50px 100px -40px rgba(94,224,255,.4); container-type:inline-size; }
   .tv::after{ content:''; position:absolute; left:50%; bottom:-26px; width:30%; height:18px; transform:translateX(-50%); background:linear-gradient(#1a1f2c,#0a0d14); clip-path:polygon(12% 0,88% 0,100% 100%,0 100%); }
@@ -201,7 +207,6 @@
   .s-rm{ background:#e9e6e1; color:#1c1c1f; } .s-rm h3{ font-family:'Unbounded'; font-size:1.3rem; } .s-rm .arr{ color:#ff6a2b; }
   .s-ii{ background:#4f378b; color:#eaddff; border-radius:40px 24px 40px 24px; } .s-ii h3{ font-family:'Bricolage Grotesque'; font-weight:800; }
   .s-uc{ background:#b8c79a; color:#26301a; } .s-uc h3{ font-family:'JetBrains Mono'; font-size:1.3rem; }
-  .s-fp{ background:#0a0a0f; color:#f2f2f7; border:1px solid transparent; background-image:linear-gradient(#0a0a0f,#0a0a0f),linear-gradient(100deg,#5cb0ff,#b39aff,#ff7fb3,#ffb75a); background-origin:border-box; background-clip:padding-box,border-box; } .s-fp h3{ font-family:'Unbounded'; font-size:1.4rem; } .s-fp .arr{ color:#ff7fb3; }
   .repos{ margin-top:50px; }
   .repos .lbl{ font-family:'JetBrains Mono'; font-size:.78rem; color:var(--dim); margin-bottom:14px; }
   .repos .chips{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -265,7 +270,8 @@
     .copy p{ margin-bottom:14px; font-size:.95rem; }
     .copy .tags{ display:none; }
     .lw{ height:40vh; } .flick{ height:40vh; } .gwatch{ width:min(260px,60vw); } .gmoves{ margin-top:30px; }
-    .echo .note{ display:none; }
+    .fpv{ height:46vh; width:min(330px,100%); }
+    .fp-lidscr{ width:38%; }
     .ghostnum{ font-size:28vh; }
     .bar .now{ display:none; }
     .room-panel{ top:auto; left:12px; right:12px; bottom:12px; width:auto; max-height:58%; transform:translateY(calc(100% + 24px)); }
@@ -303,30 +309,31 @@
     <span class="ln">my own hardware.</span>
   </h1>
   <div class="sub">
-    <p><b id="greeting">Hi, I'm Rusty.</b> Wear OS apps, a reborn Echo Show, a TV that became a window, Hyprland tools, and a homelab that never sleeps. If the tool I want doesn't exist, or it wants a cloud account, I build my own. Every project below repaints this page to look like its own site.</p>
+    <p><b id="greeting">Hi, I'm Rusty.</b> Wear OS apps, a flip phone that became a music player, a TV that became a window, Hyprland tools, and a homelab that never sleeps. If the tool I want doesn't exist, or it wants a cloud account, I build my own. Every project below repaints this page to look like its own site.</p>
     <div class="scrollcue"><i></i>follow the signal</div>
   </div>
 </header>
 
-<!-- 01 Muse Echo -->
-<section class="ch-sec" id="ch-muse" data-name="Muse Echo"
-  data-bg="#231a33" data-fg="#f6ecff" data-dim="rgba(246,236,255,.62)" data-accent="#ffb38a" data-rule="rgba(255,179,138,.2)">
+<!-- 01 Flippod -->
+<section class="ch-sec" id="ch-flippod" data-name="Flippod"
+  data-bg="#0a0a0f" data-fg="#f2f2f7" data-dim="rgba(242,242,247,.62)" data-accent="#ff7fb3" data-rule="rgba(179,154,255,.22)">
   <div class="stage">
     <div class="ghostnum">01</div>
     <div class="copy">
-      <div class="num">01 / 06 · echo show + android</div>
-      <h2>Muse Echo</h2>
-      <p>An Echo Show 5, reflashed and reborn as a Muse gadget. Muse can draw on it, talk through it and fill it with notes, timers and photos. It also has a resident: Puff, a blob who lives on the screen and has its own phone app.</p>
-      <div class="tags"><span>kotlin</span><span>lineageos</span><span>muse gadget sdk</span></div>
-      <a class="go" href="https://muse-echo.rusty.is-a.dev/">visit the site ↗</a>
+      <div class="num">01 / 06 · kaios flip phone</div>
+      <h2>Flippod</h2>
+      <p>My TCL Flip, turned into a pocket music player. Glidey keypad menus, synced lyrics, a 3D album shelf and a vinyl clock on the little lid screen. Hold the volume keys with the phone shut to skip. It's also quietly the whole home screen.</p>
+      <div class="tags"><span>kaios 4</span><span>web app</span><span>firefox devtools protocol</span></div>
+      <a class="go" href="https://rusty-workshop.github.io/flippod/">visit the site ↗</a>
     </div>
     <div class="visual">
-      <div class="echo"><div class="scr">
-        <div class="puff"><svg viewBox="0 0 200 180"><ellipse cx="100" cy="168" rx="62" ry="8" fill="rgba(0,0,0,.25)"/><g class="puffbody"><path d="M100 20 C150 20 180 60 180 105 C180 150 145 165 100 165 C55 165 20 150 20 105 C20 60 50 20 100 20 Z" fill="#ffb38a"/><ellipse cx="72" cy="70" rx="20" ry="12" fill="#ffd2b8" opacity=".7"/><g id="sigPuffEyes"><ellipse cx="78" cy="100" rx="9" ry="12" fill="#3a2e4a"/><ellipse cx="122" cy="100" rx="9" ry="12" fill="#3a2e4a"/><circle cx="81" cy="95" r="3" fill="#fff"/><circle cx="125" cy="95" r="3" fill="#fff"/></g><ellipse cx="62" cy="122" rx="10" ry="6" fill="#ff8f8f" opacity=".45"/><ellipse cx="138" cy="122" rx="10" ry="6" fill="#ff8f8f" opacity=".45"/><path d="M90 124 Q100 132 110 124" stroke="#3a2e4a" stroke-width="4" fill="none" stroke-linecap="round"/></g></svg></div>
-        <div class="clk" id="museClock">9:41<small>quiet hours at 10</small></div>
-        <div class="note">📝 coffee beans<br>cat treats (urgent)</div>
-        <div class="cap">"alarm set for 7:30. sleep well."</div>
-      </div></div>
+      <div class="fpv">
+        <div class="fphone">
+          <div class="fp-lid"><div class="fp-scr"><img src="assets/flippod/main.png" alt="Flippod main menu"><img class="s2" src="assets/flippod/nowplaying.png" alt="Now Playing"><img class="s3" src="assets/flippod/lyrics.png" alt="Synced lyrics"></div></div>
+          <div class="fp-base"><div class="fp-dpad"></div><div class="fp-keys"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+        <div class="fp-lidscr"><div class="fp-vin"><div class="fp-ring" id="fpRing"><div><span id="fpClock">9:41</span><small id="fpDate">mon nov 9</small></div></div><div class="fp-stat">47 min · 12 songs<br>♪ Tally Hall</div></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -456,7 +463,6 @@
     <a class="site s-fg" href="https://focusguard.rusty.is-a.dev/"><span class="k">hyprland · gtk4</span><h3>FocusGuard</h3><p>A focus mode that actually enforces itself. Pick apps, schedule or block them, and a daemon stops them from running.</p><span class="arr">visit ↗</span></a>
     <a class="site s-rm" href="https://tv-button-remap.rusty.is-a.dev/"><span class="k">android tv</span><h3>TV Button Remap</h3><p>Makes the Sony remote's YouTube and settings buttons do what I actually want, plus pop-ups from the homelab.</p><span class="arr">visit ↗</span></a>
     <a class="site s-ii" href="https://ii-snap.rusty.is-a.dev/"><span class="k">illogical-impulse</span><h3>ii-snap</h3><p>Snapshot and restore for my Hyprland dots, built on the installer's own file list instead of guesses.</p><span class="arr">visit ↗</span></a>
-    <a class="site s-fp" href="https://rusty-workshop.github.io/flippod/"><span class="k">kaios · flip phone</span><h3>Flippod</h3><p>Turns my TCL Flip into a pocket music player: synced lyrics, a vinyl clock on the lid, and it's the whole home screen.</p><span class="arr">visit ↗</span></a>
     <a class="site s-uc" href="https://ii-update-check.rusty.is-a.dev/"><span class="k">systemd timer</span><h3>ii-update-check</h3><p>A pager for my dotfiles. Beeps when upstream moves, never touches anything.</p><span class="arr">visit ↗</span></a>
   </div>
   <div class="repos">
@@ -567,20 +573,15 @@
   // ---------- clocks in the chapters ----------
   function clocks(){
     var d = new Date(), t = (d.getHours() % 12 || 12) + ':' + ('0' + d.getMinutes()).slice(-2);
-    document.getElementById('museClock').firstChild.nodeValue = t;
+    document.getElementById('fpClock').textContent = t;
+    document.getElementById('fpDate').textContent = d.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'}).replace(',', '').toLowerCase();
     document.getElementById('lookClock').textContent = t;
     document.getElementById('lookDate').textContent = d.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
   }
   clocks(); setInterval(clocks, 20000);
-
-  // Puff's eyes follow the pointer
-  var puffEyes = document.getElementById('sigPuffEyes');
-  window.addEventListener('pointermove', function(e){
-    if (reduced) return;
-    var r = puffEyes.getBoundingClientRect(); if (!r.width) return;
-    var dx = Math.max(-1, Math.min(1, (e.clientX - r.left - r.width/2) / 400)), dy = Math.max(-1, Math.min(1, (e.clientY - r.top - r.height/2) / 400));
-    puffEyes.setAttribute('transform', 'translate(' + (dx * 7) + ' ' + (dy * 5) + ')');
-  }, {passive:true});
+  // the lid clock's ring ticks with the seconds, like on the phone
+  var fpRing = document.getElementById('fpRing');
+  setInterval(function(){ fpRing.style.setProperty('--s', (new Date().getSeconds() / 60).toFixed(3)); }, 1000);
 
   // ---------- gambit: scroll plays the Opera Game ----------
   var FILES = 'abcdefgh';
